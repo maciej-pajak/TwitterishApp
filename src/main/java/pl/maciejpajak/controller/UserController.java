@@ -3,6 +3,7 @@ package pl.maciejpajak.controller;
 import java.time.format.DateTimeFormatter;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -11,14 +12,17 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
 import pl.maciejpajak.entity.Message;
 import pl.maciejpajak.entity.User;
+import pl.maciejpajak.form.EmailForm;
 import pl.maciejpajak.repository.MessageRepository;
 import pl.maciejpajak.repository.TweetRepository;
 import pl.maciejpajak.repository.UserRepository;
@@ -79,13 +83,22 @@ public class UserController {
     }
     
     @GetMapping("/edit")
-    public String editProfile() {
+    public String editProfile(Model model) {
+        model.addAttribute("emailForm", new EmailForm());
         return "user/edit";
     }
     
     @PostMapping("/edit")
-    public String updateProfile(@RequestParam String email) {
-        // TODO
+    public String updateProfile(@Valid EmailForm emailForm, BindingResult result,
+            @SessionAttribute(name = Consts.LOGGED_ID, required = true) Long id) {
+        if (!result.hasErrors()) {
+            if (userRepo.existsByEmail(emailForm.getEmail())) {
+                result.rejectValue("email", "emailform.email.taken", "this email is already taken");
+            } else {
+                userRepo.save(userRepo.findOne(id).setEmail(emailForm.getEmail()));
+                return "redirect:/user/edit";
+            }
+        }
         return "user/edit";
     }
     

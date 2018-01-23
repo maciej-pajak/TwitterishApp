@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="t" tagdir="/WEB-INF/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <t:pageWrapper title="Edit profile">
 
@@ -21,15 +22,19 @@
                         Update profile
                     </div>
                     <div class="panel-body">
-                        <form method="post" action='<c:url value="/user/edit"/>'>
+                        <form:form method="post" action="${pageContext.request.contextPath}/user/edit" modelAttribute="emailForm">
+                            <div class="form-group">
+                                <label>Current email:</label>
+                                <p class="form-control-static">${loggedUser.email}</p>
+                            </div>
                             <div class="form-group">
                                 <label>New email:</label>
-                                <input class="form-control" type="email" name="email" placeholder="enter new email">
-                            </div>
+                                <form:input class="form-control" type="email" path="email" placeholder="enter new email"/>
+                            </div> <form:errors path="email"/>
                             <div>
                                 <input type="submit" class="btn btn-primary" value="Update">
                             </div> 
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>
