@@ -59,10 +59,10 @@
                     </c:forEach>
                     <ul class="pager">
                         <c:if test="${tweets.hasPrevious()}">
-                            <li><a href='<c:url value="/?page=${tweets.previousPageable().pageNumber + 1}"/>'>Previous</a></li>
+                            <li><a href='<c:url value="/?page=${tweets.previousPageable().pageNumber + 1}"/>'>Show newer tweets</a></li>
                         </c:if>
                         <c:if test="${tweets.hasNext()}">
-                            <li><a href='<c:url value="/?page=${tweets.nextPageable().pageNumber + 1}"/>'>Next</a></li>
+                            <li><a href='<c:url value="/?page=${tweets.nextPageable().pageNumber + 1}"/>'>Show older tweets</a></li>
                         </c:if>
                     </ul>
                 </div>

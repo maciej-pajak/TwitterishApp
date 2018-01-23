@@ -5,38 +5,23 @@
 	<li>
 	    <a href='<c:url value="/"/>'><i class="fa fa-twitter-square fa-fw"></i> Latest tweets</a>
 	</li>
-	<li>
-
-        <a href="#"><i class="fa fa-envelope fa-fw"></i>
+    <li>
+        <a href='<c:url value="/user/inbox"/>'><i class="fa fa-envelope fa-fw"></i>
             <c:choose>
                 <c:when test = "${unreadCount gt 0}">
-                    <b> Messages (${unreadCount} unread)</b>
+                    <b> Inbox (${unreadCount} unread)</b>
                 </c:when>
                 <c:otherwise>
-                    <span> Messages</span>
+                    <span> Inbox</span>
                 </c:otherwise>
-             </c:choose>
-        <span class="fa arrow"></span></a>
-        <ul class="nav nav-second-level collapse">
-            <li>
-                <a href='<c:url value="/user/inbox"/>'>
-                <c:choose>
-                    <c:when test = "${unreadCount gt 0}">
-                        <b>Inbox</b>
-                    </c:when>
-                    <c:otherwise>
-                        Inbox
-                    </c:otherwise>
-                 </c:choose>
-                </a>
-            </li>
-            <li>
-                <a href='<c:url value="/user/outbox"/>'>Outbox</a>
-            </li>
-        </ul>
-	</li>
+            </c:choose>
+        </a>
+    </li>
+    <li>
+        <a href='<c:url value="/user/outbox"/>'><i class="fa fa-send fa-fw"></i> Outbox</a>
+    </li>
 	<li>
-	    <a href='<c:url value="/user/${user.id}"/>'><i class="fa fa-twitter fa-fw"></i> My tweets</a>
+	    <a href='<c:url value="/user/${loggedUser.id}"/>'><i class="fa fa-twitter fa-fw"></i> My tweets</a>
 	</li>
 	<li>
 	    <a href='<c:url value="/user/edit"/>'><i class="fa fa-edit fa-fw"></i> Edit profile</a>

@@ -21,7 +21,7 @@ public class GlobalControllerAdvice {
     @Autowired
     private MessageRepository messageRepo;
 
-    @ModelAttribute("user")
+    @ModelAttribute("loggedUser")
     public User user(HttpSession sess) {
         Long id = (Long) sess.getAttribute(Consts.LOGGED_ID);
         if (id == null) {

@@ -20,17 +20,13 @@ import pl.maciejpajak.entity.Message;
 import pl.maciejpajak.entity.User;
 import pl.maciejpajak.form.MessageForm;
 import pl.maciejpajak.repository.MessageRepository;
-import pl.maciejpajak.repository.TweetRepository;
 import pl.maciejpajak.repository.UserRepository;
 import pl.maciejpajak.util.Consts;
 
 @Controller
 @RequestMapping("/message")
 public class MessageController {
-    
-    @Autowired
-    private TweetRepository tweetRepo;
-    
+
     @Autowired
     private UserRepository userRepo;
     
@@ -45,11 +41,10 @@ public class MessageController {
             m.setRead(true);
             messageRepo.save(m);
             model.addAttribute("message", m);
-            model.addAttribute("userId", userId);
             model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
             return "message/show";
         }
-        return "redirect:/user/messages";
+        return "redirect:/user/inbox";
     }
     
     @GetMapping("/new")
@@ -79,7 +74,7 @@ public class MessageController {
         User sender = new User().setId(senderId);
         Message m = new Message(mf.getMessage(), false, LocalDateTime.now(), sender, recipient);
         messageRepo.save(m);
-        return "redirect:/user/messages";
+        return "redirect:/user/outbox";
     }
 
 }

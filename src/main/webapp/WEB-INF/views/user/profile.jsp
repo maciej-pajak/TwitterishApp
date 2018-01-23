@@ -18,7 +18,9 @@
             <div class="col-lg-12">
                 <div class="well">
                         <h4>Email: ${user.email}</h4>
-                        <a type="button" class="btn btn-info" href='<c:url value="/message/new?to=${user.id}"/>'>Send message</a>
+                        <c:if test="${user.id ne loggedUser.id}">
+                            <a type="button" class="btn btn-info" href='<c:url value="/message/new?to=${user.id}"/>'>Send message</a>
+                        </c:if>
                     </div>
             </div>
         </div>

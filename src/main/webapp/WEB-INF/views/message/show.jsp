@@ -13,7 +13,7 @@
             <div class="col-lg-12">
                 <h2 class="page-header">
                     <c:choose>
-                        <c:when test = "${userId eq message.sender.id}">
+                        <c:when test = "${loggedUser.id eq message.sender.id}">
                             Message to ${message.recipient.username} created ${dateFormatter.format(message.created)}
                         </c:when>
                         <c:otherwise>
@@ -30,8 +30,8 @@
         </div>
         <div class="row">
             <div class="col-lg-12">
-                <c:if test="${userId eq message.recipient.id}">
-                    <a href='<c:url value="/message/new?to=${message.sender.id}"/>' type="button" class="btn btn-primary">Reply</a>
+                <c:if test="${loggedUser.id eq message.recipient.id}">
+                    <a href='<c:url value="/message/new?to=${message.sender.id}"/>' type="button" class="btn btn-success btn-outline">Reply</a>
                 </c:if>
             </div>
         </div>
