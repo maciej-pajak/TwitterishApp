@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import pl.maciejpajak.entity.Message;
+import pl.maciejpajak.entity.Tweet;
 import pl.maciejpajak.entity.User;
 import pl.maciejpajak.form.EmailForm;
+import pl.maciejpajak.repository.CommentRepository;
 import pl.maciejpajak.repository.MessageRepository;
 import pl.maciejpajak.repository.TweetRepository;
 import pl.maciejpajak.repository.UserRepository;
@@ -41,6 +43,9 @@ public class UserController {
     @Autowired
     private MessageRepository messageRepo;
     
+    @Autowired
+    private CommentRepository commentRepo;
+    
     @GetMapping("/{id:[0-9]+}")
     public String showProfile(@PathVariable long id, Model model, @PageableDefault(size = 10, sort = "created", direction = Sort.Direction.DESC) Pageable pageable) {
         User u = userRepo.findOne(id);
@@ -48,7 +53,9 @@ public class UserController {
             return "redirect:/error";
         }
         model.addAttribute("user", u);
-        model.addAttribute("tweets", tweetRepo.findByUserId(id, pageable));
+        Page<Tweet> tweets = tweetRepo.findByUserId(id, pageable);
+        tweets.forEach(t -> t.setCommentsCount(commentRepo.countByTweetId(t.getId())));
+        model.addAttribute("tweets", tweets);
         model.addAttribute("dateFormatter", DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm"));
         return "user/profile";
     }

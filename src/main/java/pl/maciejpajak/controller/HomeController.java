@@ -32,10 +32,7 @@ public class HomeController {
     @ModelAttribute("tweets")
     public Page<Tweet> tweets(@PageableDefault(size = 5, sort = "created", direction = Sort.Direction.DESC) Pageable pageable) {
         Page<Tweet> tweets = tweetRepo.findAll(pageable);
-        tweets.forEach(t -> {
-            System.out.println("========>" + commentRepo.countByTweetId(t.getId()));
-        t.setCommentsCount(commentRepo.countByTweetId(t.getId()));
-        });
+        tweets.forEach(t -> t.setCommentsCount(commentRepo.countByTweetId(t.getId())));
         return tweets;
     }
     
