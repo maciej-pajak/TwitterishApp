@@ -12,11 +12,10 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         Long id = (Long) request.getSession().getAttribute("LOGGED_IN_USER_ID");
-//        if (id == null) { // TODO
-//            response.sendRedirect(request.getContextPath() + "/login");
-////            request.getRequestDispatcher(request.getContextPath() + "/login").forward(request, response);
-//            return false;
-//        }
+        if (id == null) {
+            response.sendRedirect(request.getContextPath() + "/login");
+            return false;
+        }
         return true;
     }
 
