@@ -19,11 +19,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.bind.support.SessionStatus;
 
 import pl.maciejpajak.entity.Message;
 import pl.maciejpajak.entity.Tweet;
 import pl.maciejpajak.entity.User;
 import pl.maciejpajak.form.EmailForm;
+import pl.maciejpajak.form.SingleStringForm;
 import pl.maciejpajak.repository.CommentRepository;
 import pl.maciejpajak.repository.MessageRepository;
 import pl.maciejpajak.repository.TweetRepository;
@@ -92,6 +94,7 @@ public class UserController {
     @GetMapping("/edit")
     public String editProfile(Model model) {
         model.addAttribute("emailForm", new EmailForm());
+        model.addAttribute("singleStringForm", new SingleStringForm());
         return "user/edit";
     }
     
@@ -110,8 +113,22 @@ public class UserController {
     }
     
     @PostMapping("/delete")
-    public String deleteProfile(@RequestParam String password) {
-        // TODO
+    public String deleteProfile(@Valid SingleStringForm passwordForm,
+            BindingResult result,
+            @SessionAttribute(name = Consts.LOGGED_ID, required = true) Long id,
+            HttpSession session,
+            Model model) {
+        model.addAttribute("emailForm", new EmailForm());   // TODO rethink
+        User u = userRepo.findOne(id);
+        if (result.hasErrors()) {
+            return "user/edit";
+        }
+        if (!u.checkPassword(passwordForm.getString())) {
+            result.rejectValue("string", "passwordForm.invalid", "invalid password");
+            return "user/edit";
+        }
+        session.setAttribute(Consts.LOGGED_ID, null);
+        userRepo.delete(u);
         return "redirect:/";
     }
     

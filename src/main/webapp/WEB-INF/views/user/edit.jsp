@@ -47,15 +47,15 @@
                     </div>
                     <div class="panel-body">
                         <p>This action will delete your profile, tweets and comments. Cannot be undone.</p>
-                        <form method="post" action='<c:url value="/user/delete"/>'>
+                        <form:form method="post" action="${pageContext.request.contextPath}/user/delete" modelAttribute="singleStringForm">
                             <div class="form-group">
                                 <label>Enter your password to confirm:</label>
-                                <input class="form-control" type="password" name="password" placeholder="confirm action with your password">
-                            </div>
+                                <form:input class="form-control" type="password" path="string" placeholder="confirm action with your password"/>
+                            </div> <form:errors path="string" element="div"/>
                             <div>
                                 <input type="submit" class="btn btn-danger" value="DELETE MY ACCOUNT">
                             </div> 
-                        </form>
+                        </form:form>
                     </div>
                 </div>
             </div>

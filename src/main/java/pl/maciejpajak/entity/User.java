@@ -2,6 +2,7 @@ package pl.maciejpajak.entity;
 
 import java.util.Collection;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,11 +36,17 @@ public class User {
     @NotNull        // TODO check
     private boolean enabled;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Collection<Tweet> tweets;
     
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
     private Collection<Comment> comments;
+    
+    @OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+    private Collection<Message> sendMessages;
+    
+    @OneToMany(mappedBy = "recipient", cascade = CascadeType.REMOVE)
+    private Collection<Message> receivedMessages;
     
     public User() {}
 
