@@ -38,4 +38,5 @@ public class GlobalControllerAdvice {
         }
         return messageRepo.countByRecipientIdAndRead(id, false);
     }
+    
 }

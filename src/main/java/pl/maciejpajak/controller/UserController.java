@@ -17,9 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
-import org.springframework.web.bind.support.SessionStatus;
 
 import pl.maciejpajak.entity.Message;
 import pl.maciejpajak.entity.Tweet;
@@ -73,10 +71,8 @@ public class UserController {
         
         if (box.equals("inbox")) {
             messages = messageRepo.findByRecipientId(id, pageable);
-        } else if (box.equals("outbox")) {
-            messages = messageRepo.findBySenderId(id, pageable);
         } else {
-            messages = null; // TODO redirect to error handler
+            messages = messageRepo.findBySenderId(id, pageable);
         }
         
         messages.forEach(m -> {
@@ -118,7 +114,7 @@ public class UserController {
             @SessionAttribute(name = Consts.LOGGED_ID, required = true) Long id,
             HttpSession session,
             Model model) {
-        model.addAttribute("emailForm", new EmailForm());   // TODO rethink
+        model.addAttribute("emailForm", new EmailForm());
         User u = userRepo.findOne(id);
         if (result.hasErrors()) {
             return "user/edit";
